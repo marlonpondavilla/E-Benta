@@ -10,7 +10,6 @@ namespace E_Benta.Controllers
     public class UserController(IUserService service) : ControllerBase
     {
 
-
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers()
             => Ok(await service.GetUsersAsync());

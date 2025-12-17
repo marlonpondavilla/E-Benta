@@ -1,4 +1,5 @@
-﻿using E_Benta.Models;
+﻿using E_Benta.Dtos;
+using E_Benta.Models;
 using E_Benta.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,11 @@ namespace E_Benta.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetUsers()
+        public async Task<ActionResult<List<UserResponseDto>>> GetUsers()
             => Ok(await service.GetUsersAsync());
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        public async Task<ActionResult<UserResponseDto>> GetUserById(int id)
         {
             var user = await service.GetUserByIdAsync(id);
             if (user is null)

@@ -1,4 +1,5 @@
 ﻿using E_Benta.Data;
+using E_Benta.Dtos;
 using E_Benta.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace E_Benta.Services
     public class UserService(AppDbContext context) : IUserService
     {
 
-        public Task<User> CreateUserAsync(User user)
+        public Task<UserResponseDto> CreateUserAsync(User user)
         {
             throw new NotImplementedException();
         }
@@ -17,12 +18,28 @@ namespace E_Benta.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<User>> GetUsersAsync()
-            => await context.Users.ToListAsync();
+        public async Task<List<UserResponseDto>> GetUsersAsync()
+            => await context.Users
+                .Select(user => new UserResponseDto
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Username = user.Username,
+                    isBentador = user.isBentador,
+                })
+                .ToListAsync();
 
-        public async Task<User?> GetUserByIdAsync(int id)
+        public async Task<UserResponseDto?> GetUserByIdAsync(int id)
         {
-            var result = await context.Users.FindAsync(id);
+            var result = await context.Users.Where(u => u.Id == id)
+                .Select(user => new UserResponseDto
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Username = user.Username,
+                    isBentador = user.isBentador,
+                })
+                .FirstOrDefaultAsync();
             return result;
         }
 

@@ -7,9 +7,9 @@ namespace E_Benta.Services
     {
         Task<List <UserResponseDto  >> GetUsersAsync();
         Task<UserResponseDto?> GetUserByIdAsync(int id);
-        Task<UserResponseDto> CreateUserAsync(User user);
+        Task<UserResponseDto> CreateUserAsync(CreateUserDto newUser);
 
-        Task<bool> UpdateUserAsync(int id, User user);
+        Task<bool> UpdateUserAsync(int id, UpdateUserDto updatedUser);
         Task<bool> DeleteUserAsync(int id);
 
     }

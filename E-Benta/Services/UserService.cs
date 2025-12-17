@@ -8,14 +8,39 @@ namespace E_Benta.Services
     public class UserService(AppDbContext context) : IUserService
     {
 
-        public Task<UserResponseDto> CreateUserAsync(User user)
+        public async Task<UserResponseDto> CreateUserAsync(CreateUserDto user)
         {
-            throw new NotImplementedException();
+            var newUser = new User
+            {
+                Name = user.Name,
+                Username = user.Username,
+                PasswordHash = user.Password,
+                isBentador = user.isBentador,
+            };
+
+            context.Users.Add(newUser);
+            await context.SaveChangesAsync();
+
+            return new UserResponseDto
+            {
+                Id = newUser.Id,
+                Name = newUser.Name,
+                Username = newUser.Username,
+                isBentador = newUser.isBentador,
+            };
         }
 
-        public Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(int id)   
         {
-            throw new NotImplementedException();
+            var userToDelete = await context.Users.FindAsync(id);
+            if (userToDelete == null)
+            {
+                return false;
+            }
+            context.Users.Remove(userToDelete);
+            await context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<List<UserResponseDto>> GetUsersAsync()
@@ -25,6 +50,7 @@ namespace E_Benta.Services
                     Id = user.Id,
                     Name = user.Name,
                     Username = user.Username,
+                    HashPassword = user.PasswordHash,
                     isBentador = user.isBentador,
                 })
                 .ToListAsync();
@@ -37,15 +63,28 @@ namespace E_Benta.Services
                     Id = user.Id,
                     Name = user.Name,
                     Username = user.Username,
+                    HashPassword = user.PasswordHash,
                     isBentador = user.isBentador,
                 })
                 .FirstOrDefaultAsync();
             return result;
         }
 
-        public Task<bool> UpdateUserAsync(int id, User user)
+        public async Task<bool> UpdateUserAsync(int id, UpdateUserDto updatedUser)
         {
-            throw new NotImplementedException();
+            var existingUser = await context.Users.FindAsync(id);
+            if (existingUser == null)
+            {
+                return false;
+            }
+
+            existingUser.Name = updatedUser.Name;
+            existingUser.Username = updatedUser.Username;
+            existingUser.PasswordHash = updatedUser.HashPassword;
+            existingUser.isBentador = updatedUser.isBentador;
+
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

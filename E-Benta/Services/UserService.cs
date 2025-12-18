@@ -1,11 +1,12 @@
 ﻿using E_Benta.Data;
 using E_Benta.Dtos;
 using E_Benta.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Benta.Services
 {
-    public class UserService(AppDbContext context) : IUserService
+    public class UserService(AppDbContext context, IPasswordHasher<User> passwordHasher) : IUserService
     {
 
         public async Task<UserResponseDto> CreateUserAsync(CreateUserDto user)
@@ -14,9 +15,11 @@ namespace E_Benta.Services
             {
                 Name = user.Name,
                 Username = user.Username,
-                PasswordHash = user.Password,
                 isBentador = user.isBentador,
             };
+
+            //hashing password
+            newUser.PasswordHash = passwordHasher.HashPassword(newUser, user.Password);
 
             context.Users.Add(newUser);
             await context.SaveChangesAsync();

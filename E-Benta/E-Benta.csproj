@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>E_Benta</RootNamespace>
+    <UserSecretsId>51f613b0-7223-4cbe-a097-e7366fb9fc8e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

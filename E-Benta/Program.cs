@@ -19,6 +19,7 @@ builder.Services.AddScoped<E_Benta.Services.IUserService, E_Benta.Services.UserS
 
 //hashing service
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddSingleton<E_Benta.Auth.IJwtService, E_Benta.Auth.JwtService>();
 
 var app = builder.Build();
 

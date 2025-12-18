@@ -3,14 +3,11 @@ using E_Benta.Dtos;
 using E_Benta.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using E_Benta.Auth;
 
 namespace E_Benta.Services
 {
-    public class UserService(AppDbContext context, IPasswordHasher<User> passwordHasher) : IUserService
+    public class UserService(AppDbContext context, IPasswordHasher<User> passwordHasher, IJwtService jwtService) : IUserService
     {
 
         public async Task<UserResponseDto> CreateUserAsync(CreateUserDto user)
@@ -109,7 +106,7 @@ namespace E_Benta.Services
                 return null;
             }   
 
-            var token = GenerateJwtToken(user);
+            var token = jwtService.GenerateJwtToken(user);
 
             return new LoginResponseDto
             {
@@ -119,31 +116,6 @@ namespace E_Benta.Services
                 isBentador = user.isBentador,
             };
 
-        }
-
-        private string GenerateJwtToken(User user)
-        {
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim("name", user.Name),
-                new Claim("isBentador", user.isBentador.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SECRET KEY"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: "app",
-                audience: "app",
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: creds
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

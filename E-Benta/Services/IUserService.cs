@@ -12,5 +12,7 @@ namespace E_Benta.Services
         Task<bool> UpdateUserAsync(int id, UpdateUserDto updatedUser);
         Task<bool> DeleteUserAsync(int id);
 
+        Task<LoginResponseDto?> LoginAsync(LoginUserDto loginDto);
+
     }
 }

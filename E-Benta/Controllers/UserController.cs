@@ -1,7 +1,5 @@
 ﻿using E_Benta.Dtos;
-using E_Benta.Models;
 using E_Benta.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Benta.Controllers

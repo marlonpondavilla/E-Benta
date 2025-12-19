@@ -54,5 +54,18 @@ namespace E_Benta.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id}/bentador")]
+        public async Task<IActionResult> UpdateBentadorStatus(int id, [FromBody] UpdateBentadorDto dto)
+        {
+            var success = await service.UpdateBentadorStatusAsync(id, dto.IsBentador);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
     }
 }

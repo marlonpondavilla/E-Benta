@@ -110,12 +110,27 @@ namespace E_Benta.Services
 
             return new LoginResponseDto
             {
+                Id = user.Id,
                 Token = token,
                 Username = user.Username,
                 Name = user.Name,
                 isBentador = user.isBentador,
             };
 
+        }
+
+        public async Task<bool> UpdateBentadorStatusAsync(int id, bool isBentador)
+        {
+            var user = await context.Users.FindAsync(id);
+            if(user == null)
+            {
+                return false;
+            }
+
+            user.isBentador = isBentador;
+            await context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

@@ -13,6 +13,7 @@ namespace E_Benta.Services
         Task<bool> DeleteUserAsync(int id);
 
         Task<LoginResponseDto?> LoginAsync(LoginUserDto loginDto);
+        Task<bool> UpdateBentadorStatusAsync(int id, bool isBentador);
 
     }
 }

@@ -44,6 +44,7 @@ namespace E_Benta.Auth
         {
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Username),
                 new Claim("name", user.Name),
                 new Claim("isBentador", user.isBentador.ToString()),

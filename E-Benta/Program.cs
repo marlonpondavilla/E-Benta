@@ -28,6 +28,9 @@ builder.Services.AddSingleton<E_Benta.Auth.IJwtService, E_Benta.Auth.JwtService>
 //product service
 builder.Services.AddScoped<IProductService, ProductService>();
 
+// cart service
+builder.Services.AddScoped<ICartService, CartService>();
+
 // JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"] ?? string.Empty;
 byte[] keyBytes;

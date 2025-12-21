@@ -31,6 +31,9 @@ builder.Services.AddScoped<IProductService, ProductService>();
 // cart service
 builder.Services.AddScoped<ICartService, CartService>();
 
+// order service
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 // JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"] ?? string.Empty;
 byte[] keyBytes;
@@ -68,12 +71,12 @@ builder.Services
                     if (!string.IsNullOrEmpty(cookieToken))
                     {
                         context.Token = cookieToken;
-                    }
-                }
-                return Task.CompletedTask;
-            }
-        };
-    });
+                      }
+                  }
+                  return Task.CompletedTask;
+              }
+          };
+      });
 
 var app = builder.Build();
 
